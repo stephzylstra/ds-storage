@@ -1,0 +1,98 @@
+---
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: "Digital Sense Storage API"
+host: "virtserver.swaggerhub.com"
+basePath: "/stephzylstra/Storage/0.0.1"
+schemes:
+- "https"
+paths:
+  /volumes:
+    get:
+      description: "Gets `Volume` objects.\nOptional query param of **size** determines\n\
+        size of returned array (to a maximum of 300).\nYou can paginate through more\
+        \ results using\nthe **offset** optional parameter. Use any of\nthe other\
+        \ parameters to filter the results.\n"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "size"
+        in: "query"
+        description: "Size of results array"
+        required: false
+        type: "integer"
+        default: 300
+      - name: "offset"
+        in: "query"
+        description: "Used to paginate. To get the 6th response with a **size** of\
+          \ 5, use an offset of 5."
+        required: false
+        type: "integer"
+        default: 0
+      - name: "tiers"
+        in: "query"
+        description: "Filter by storage tier"
+        required: false
+        type: "string"
+        default: "all"
+        enum:
+        - "all"
+        - "iron"
+        - "bronze"
+        - "silver"
+        - "gold"
+        - "platinum"
+        - "diamond"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            type: "array"
+            title: "volumes"
+            items:
+              $ref: "#/definitions/volume"
+    post:
+      description: "Create a new volume"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Supply the volume details"
+        required: true
+        schema:
+          $ref: "#/definitions/volume"
+      responses:
+        201:
+          description: "Successful creation"
+          schema:
+            $ref: "#/definitions/volume"
+definitions:
+  volume:
+    type: "object"
+    required:
+    - "group"
+    - "name"
+    - "provisionedSize"
+    - "tier"
+    properties:
+      name:
+        type: "string"
+      group:
+        type: "string"
+      provisionedSize:
+        type: "number"
+        format: "double"
+      usedSize:
+        type: "number"
+        format: "double"
+      tier:
+        type: "string"
+        enum:
+        - "iron"
+        - "bronze"
+        - "silver"
+        - "gold"
+        - "platinum"
+        - "diamond"
