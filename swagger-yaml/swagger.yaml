@@ -25,8 +25,7 @@ paths:
       - "volumes"
       description: "Gets `Volume` objects.\nOptional query param of **size** determines\n\
         size of returned array (to a maximum of 300).\nYou can paginate through more\
-        \ results using\nthe **offset** optional parameter. Use any of\nthe other\
-        \ parameters to filter the results.\n"
+        \ results using\nthe **offset** optional parameter. \n"
       parameters:
       - name: "size"
         in: "query"
