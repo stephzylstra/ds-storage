@@ -5,17 +5,28 @@ info:
   title: "Digital Sense Storage API"
 host: "virtserver.swaggerhub.com"
 basePath: "/stephzylstra/Storage/0.0.1"
+tags:
+- name: "volumes"
+  description: "volumes section"
+- name: "network"
+  description: "LIFs"
+- name: "tiers"
+  description: "tiers section"
 schemes:
 - "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
 paths:
   /volumes:
     get:
+      tags:
+      - "volumes"
       description: "Gets `Volume` objects.\nOptional query param of **size** determines\n\
         size of returned array (to a maximum of 300).\nYou can paginate through more\
         \ results using\nthe **offset** optional parameter. Use any of\nthe other\
         \ parameters to filter the results.\n"
-      produces:
-      - "application/json"
       parameters:
       - name: "size"
         in: "query"
@@ -53,9 +64,9 @@ paths:
             items:
               $ref: "#/definitions/volume"
     post:
+      tags:
+      - "volumes"
       description: "Create a new volume"
-      produces:
-      - "application/json"
       parameters:
       - in: "body"
         name: "body"
@@ -68,6 +79,93 @@ paths:
           description: "Successful creation"
           schema:
             $ref: "#/definitions/volume"
+        400:
+          description: "Bad request"
+          schema:
+            $ref: "#/definitions/error"
+  /volumes/search:
+    get:
+      tags:
+      - "volumes"
+      description: "Search for specific volumes."
+      parameters:
+      - name: "volume"
+        in: "query"
+        description: "Name of the volume/s to search for. May use * for wildcard."
+        required: false
+        type: "string"
+      - name: "tier"
+        in: "query"
+        description: "Search for volumes located on this tier"
+        required: false
+        type: "string"
+      - name: "protocol"
+        in: "query"
+        description: "The protocol of the volume - NFS, CIFS or ISCSI"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Successful request. Note that this may still be an empty list."
+          schema:
+            type: "array"
+            title: "searchedVolumes"
+            items:
+              $ref: "#/definitions/volume"
+  /volumes/{name}:
+    get:
+      tags:
+      - "volumes"
+      description: "Get information about a single volume"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the volume"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/volume"
+    put:
+      tags:
+      - "volumes"
+      description: "Update volume characteristics"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the volume"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful update"
+          schema:
+            $ref: "#/definitions/volume"
+        400:
+          description: "The request could not be completed successfully."
+          schema:
+            $ref: "#/definitions/error"
+    delete:
+      tags:
+      - "volumes"
+      description: "Delete a single volume."
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the volume"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/volume"
+        400:
+          description: "The request could not be completed successfully."
+          schema:
+            $ref: "#/definitions/error"
 definitions:
   volume:
     type: "object"
@@ -96,3 +194,8 @@ definitions:
         - "gold"
         - "platinum"
         - "diamond"
+  error:
+    type: "object"
+    properties:
+      errorMessage:
+        type: "string"
