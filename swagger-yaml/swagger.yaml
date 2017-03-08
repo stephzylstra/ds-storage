@@ -7,11 +7,11 @@ host: "virtserver.swaggerhub.com"
 basePath: "/stephzylstra/Storage/0.0.1"
 tags:
 - name: "volumes"
-  description: "volumes section"
+  description: "Operations at the volume level"
 - name: "network"
-  description: "LIFs"
+  description: "Operations at the network level of the storage stack"
 - name: "tiers"
-  description: "tiers section"
+  description: "The storage tiers available for use"
 schemes:
 - "https"
 consumes:
@@ -19,6 +19,19 @@ consumes:
 produces:
 - "application/json"
 paths:
+  /network/lifs:
+    get:
+      tags:
+      - "network"
+      parameters: []
+      responses:
+        200:
+          description: "Successful response."
+          schema:
+            type: "array"
+            title: "LIF Array"
+            items:
+              $ref: "#/definitions/lif"
   /volumes:
     get:
       tags:
@@ -197,4 +210,20 @@ definitions:
     type: "object"
     properties:
       errorMessage:
+        type: "string"
+  lif:
+    type: "object"
+    required:
+    - "dataProtocol"
+    - "ip"
+    - "name"
+    - "netmask"
+    properties:
+      name:
+        type: "string"
+      ip:
+        type: "string"
+      netmask:
+        type: "string"
+      dataProtocol:
         type: "string"
