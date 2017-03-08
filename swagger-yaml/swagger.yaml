@@ -29,7 +29,7 @@ paths:
           description: "Successful response."
           schema:
             type: "array"
-            title: "LIF Array"
+            title: "LIFarray"
             items:
               $ref: "#/definitions/lif"
   /volumes:
