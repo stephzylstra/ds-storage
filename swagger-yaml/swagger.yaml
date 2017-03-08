@@ -105,6 +105,28 @@ paths:
             title: "TierArray"
             items:
               $ref: "#/definitions/tier"
+  /tiers/{name}:
+    get:
+      tags:
+      - "tiers"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the tier"
+        required: true
+        type: "string"
+        enum:
+        - "diamond"
+        - "platinum"
+        - "gold"
+        - "silver"
+        - "bronze"
+        - "iron"
+      responses:
+        200:
+          description: "Succesful response."
+          schema:
+            $ref: "#/definitions/tier"
   /volumes:
     get:
       tags:
