@@ -302,3 +302,21 @@ definitions:
         type: "array"
         items:
           type: "string"
+  tier:
+    type: "object"
+    required:
+    - "description"
+    - "iopsPerGbExpected"
+    - "iopsPerGbSla"
+    - "name"
+    properties:
+      name:
+        type: "string"
+      description:
+        type: "string"
+      iopsPerGbExpected:
+        type: "number"
+        format: "double"
+      iopsPerGbSla:
+        type: "number"
+        format: "double"
