@@ -1,0 +1,344 @@
+---
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: "Digital Sense Storage API"
+host: "virtserver.swaggerhub.com"
+basePath: "/stephzylstra/Storage/0.0.1"
+tags:
+- name: "volumes"
+  description: "Operations at the volume level"
+- name: "network"
+  description: "Operations at the network level of the storage stack"
+- name: "tiers"
+  description: "The storage tiers available for use"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /network/lifs:
+    get:
+      tags:
+      - "network"
+      parameters: []
+      responses:
+        200:
+          description: "Successful response."
+          schema:
+            type: "array"
+            title: "LIFarray"
+            items:
+              $ref: "#/definitions/lif"
+  /network/lifs/{name}:
+    get:
+      tags:
+      - "network"
+      description: "Get information about a single LIF"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the LIF"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/lif"
+    put:
+      tags:
+      - "network"
+      description: "Update LIF characteristics"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the LIF"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Supply the LIF details"
+        required: true
+        schema:
+          $ref: "#/definitions/lif"
+      responses:
+        200:
+          description: "Successful update"
+          schema:
+            $ref: "#/definitions/lif"
+        400:
+          description: "The request could not be completed successfully."
+          schema:
+            $ref: "#/definitions/error"
+    delete:
+      tags:
+      - "network"
+      description: "Delete a single LIF."
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the LIF"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/lif"
+        400:
+          description: "The request could not be completed successfully."
+          schema:
+            $ref: "#/definitions/error"
+  /tiers:
+    get:
+      tags:
+      - "tiers"
+      parameters: []
+      responses:
+        200:
+          description: "Successful response."
+          schema:
+            type: "array"
+            title: "TierArray"
+            items:
+              $ref: "#/definitions/tier"
+  /tiers/{name}:
+    get:
+      tags:
+      - "tiers"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the tier"
+        required: true
+        type: "string"
+        enum:
+        - "diamond"
+        - "platinum"
+        - "gold"
+        - "silver"
+        - "bronze"
+        - "iron"
+      responses:
+        200:
+          description: "Succesful response."
+          schema:
+            $ref: "#/definitions/tier"
+  /volumes:
+    get:
+      tags:
+      - "volumes"
+      description: "Gets `Volume` objects.\nOptional query param of **size** determines\n\
+        size of returned array (to a maximum of 300).\nYou can paginate through more\
+        \ results using\nthe **offset** optional parameter. \n"
+      parameters:
+      - name: "size"
+        in: "query"
+        description: "Size of results array"
+        required: false
+        type: "integer"
+        default: 300
+      - name: "offset"
+        in: "query"
+        description: "Used to paginate. To get the 6th response with a **size** of\
+          \ 5, use an offset of 5."
+        required: false
+        type: "integer"
+        default: 0
+      - name: "tiers"
+        in: "query"
+        description: "Filter by storage tier"
+        required: false
+        type: "string"
+        default: "all"
+        enum:
+        - "all"
+        - "iron"
+        - "bronze"
+        - "silver"
+        - "gold"
+        - "platinum"
+        - "diamond"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            type: "array"
+            title: "volumes"
+            items:
+              $ref: "#/definitions/volume"
+    post:
+      tags:
+      - "volumes"
+      description: "Create a new volume"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Supply the volume details"
+        required: true
+        schema:
+          $ref: "#/definitions/volume"
+      responses:
+        201:
+          description: "Successful creation"
+          schema:
+            $ref: "#/definitions/volume"
+        400:
+          description: "Bad request"
+          schema:
+            $ref: "#/definitions/error"
+  /volumes/search:
+    get:
+      tags:
+      - "volumes"
+      description: "Search for specific volumes."
+      parameters:
+      - name: "volume"
+        in: "query"
+        description: "Name of the volume/s to search for. May use * for wildcard."
+        required: false
+        type: "string"
+      - name: "tier"
+        in: "query"
+        description: "Search for volumes located on this tier"
+        required: false
+        type: "string"
+      - name: "protocol"
+        in: "query"
+        description: "The protocol of the volume - NFS, CIFS or ISCSI"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Successful request. Note that this may still be an empty list."
+          schema:
+            type: "array"
+            title: "searchedVolumes"
+            items:
+              $ref: "#/definitions/volume"
+  /volumes/{name}:
+    get:
+      tags:
+      - "volumes"
+      description: "Get information about a single volume"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the volume"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/volume"
+    put:
+      tags:
+      - "volumes"
+      description: "Update volume characteristics"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the volume"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful update"
+          schema:
+            $ref: "#/definitions/volume"
+        400:
+          description: "The request could not be completed successfully."
+          schema:
+            $ref: "#/definitions/error"
+    delete:
+      tags:
+      - "volumes"
+      description: "Delete a single volume."
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the volume"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/volume"
+        400:
+          description: "The request could not be completed successfully."
+          schema:
+            $ref: "#/definitions/error"
+definitions:
+  volume:
+    type: "object"
+    required:
+    - "group"
+    - "name"
+    - "provisionedSize"
+    - "tier"
+    properties:
+      name:
+        type: "string"
+      group:
+        type: "string"
+      provisionedSize:
+        type: "number"
+        format: "double"
+      usedSize:
+        type: "number"
+        format: "double"
+      tier:
+        type: "string"
+        enum:
+        - "iron"
+        - "bronze"
+        - "silver"
+        - "gold"
+        - "platinum"
+        - "diamond"
+  error:
+    type: "object"
+    properties:
+      errorMessage:
+        type: "string"
+  lif:
+    type: "object"
+    required:
+    - "dataProtocol"
+    - "ip"
+    - "name"
+    - "netmask"
+    properties:
+      name:
+        type: "string"
+      ip:
+        type: "string"
+      netmask:
+        type: "string"
+      dataProtocol:
+        type: "array"
+        items:
+          type: "string"
+  tier:
+    type: "object"
+    required:
+    - "description"
+    - "iopsPerGbExpected"
+    - "iopsPerGbSla"
+    - "name"
+    properties:
+      name:
+        type: "string"
+      description:
+        type: "string"
+      iopsPerGbExpected:
+        type: "number"
+        format: "double"
+      iopsPerGbSla:
+        type: "number"
+        format: "double"
