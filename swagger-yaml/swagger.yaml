@@ -32,6 +32,79 @@ paths:
             title: "LIFarray"
             items:
               $ref: "#/definitions/lif"
+  /network/lifs/{name}:
+    get:
+      tags:
+      - "network"
+      description: "Get information about a single LIF"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the LIF"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/lif"
+    put:
+      tags:
+      - "network"
+      description: "Update LIF characteristics"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the LIF"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Supply the LIF details"
+        required: true
+        schema:
+          $ref: "#/definitions/lif"
+      responses:
+        200:
+          description: "Successful update"
+          schema:
+            $ref: "#/definitions/lif"
+        400:
+          description: "The request could not be completed successfully."
+          schema:
+            $ref: "#/definitions/error"
+    delete:
+      tags:
+      - "network"
+      description: "Delete a single LIF."
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the LIF"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/lif"
+        400:
+          description: "The request could not be completed successfully."
+          schema:
+            $ref: "#/definitions/error"
+  /tiers:
+    get:
+      tags:
+      - "tiers"
+      parameters: []
+      responses:
+        200:
+          description: "Successful response."
+          schema:
+            type: "array"
+            title: "TierArray"
+            items:
+              $ref: "#/definitions/tier"
   /volumes:
     get:
       tags:
@@ -226,4 +299,6 @@ definitions:
       netmask:
         type: "string"
       dataProtocol:
-        type: "string"
+        type: "array"
+        items:
+          type: "string"
