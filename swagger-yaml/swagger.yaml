@@ -347,3 +347,19 @@ definitions:
       pricePerGb:
         type: "number"
         format: "double"
+  aggregate:
+    type: "object"
+    required:
+    - "name"
+    - "tier"
+    properties:
+      name:
+        type: "string"
+      tier:
+        $ref: "#/definitions/tier"
+      freeSize:
+        type: "number"
+        format: "double"
+      usedSize:
+        type: "number"
+        format: "double"
