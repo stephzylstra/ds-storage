@@ -363,3 +363,14 @@ definitions:
       usedSize:
         type: "number"
         format: "double"
+  vserver:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      protocols:
+        type: "array"
+        items:
+          type: "string"
+      state:
+        type: "string"
