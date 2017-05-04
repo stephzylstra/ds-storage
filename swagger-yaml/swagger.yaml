@@ -40,20 +40,6 @@ paths:
         required: false
         type: "integer"
         default: 0
-      - name: "tiers"
-        in: "query"
-        description: "Filter by storage tier"
-        required: false
-        type: "string"
-        default: "all"
-        enum:
-        - "all"
-        - "iron"
-        - "bronze"
-        - "silver"
-        - "gold"
-        - "platinum"
-        - "diamond"
       responses:
         200:
           description: "Successful response"
