@@ -101,6 +101,11 @@ paths:
         enum:
         - "kenmore"
         - "nextdc"
+      - name: "vserver"
+        in: "query"
+        description: "Name of vserver. Not required if there is only one."
+        required: false
+        type: "string"
       responses:
         200:
           description: "Successful response"
@@ -124,6 +129,11 @@ paths:
         enum:
         - "kenmore"
         - "nextdc"
+      - name: "vserver"
+        in: "query"
+        description: "Name of vserver. Not required if there is only one."
+        required: false
+        type: "string"
       responses:
         200:
           description: "Successful update"
@@ -152,6 +162,11 @@ paths:
         enum:
         - "kenmore"
         - "nextdc"
+      - name: "vserver"
+        in: "query"
+        description: "Name of vserver. Not required if there is only one."
+        required: false
+        type: "string"
       responses:
         200:
           description: "Successful response"
