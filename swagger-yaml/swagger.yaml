@@ -19,7 +19,7 @@ consumes:
 produces:
 - "application/json"
 paths:
-  /volumes:
+  /location/{location}/volumes:
     get:
       tags:
       - "volumes"
@@ -27,6 +27,13 @@ paths:
         size of returned array (to a maximum of 300).\nYou can paginate through more\
         \ results using\nthe **offset** optional parameter. \n"
       parameters:
+      - name: "location"
+        in: "path"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
       - name: "size"
         in: "query"
         description: "Size of results array"
@@ -53,6 +60,13 @@ paths:
       - "volumes"
       description: "Create a new volume"
       parameters:
+      - name: "location"
+        in: "path"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
       - in: "body"
         name: "body"
         description: "Supply the volume details"
@@ -68,7 +82,7 @@ paths:
           description: "Bad request"
           schema:
             $ref: "#/definitions/error"
-  /volumes/{name}:
+  /location/{location}/volumes/{name}:
     get:
       tags:
       - "volumes"
@@ -79,6 +93,14 @@ paths:
         description: "Name of the volume"
         required: true
         type: "string"
+      - name: "location"
+        in: "path"
+        description: "Physical storage location (kenmore or nextdc)"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
       responses:
         200:
           description: "Successful response"
@@ -94,6 +116,14 @@ paths:
         description: "Name of the volume"
         required: true
         type: "string"
+      - name: "location"
+        in: "path"
+        description: "Physical storage location (kenmore or nextdc)"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
       responses:
         200:
           description: "Successful update"
@@ -106,13 +136,22 @@ paths:
     delete:
       tags:
       - "volumes"
-      description: "Delete a single volume."
+      description: "Delete a single volume. WARNING - This operation is not reversible\
+        \ and WILL cause data loss."
       parameters:
       - name: "name"
         in: "path"
         description: "Name of the volume"
         required: true
         type: "string"
+      - name: "location"
+        in: "path"
+        description: "Physical storage location (kenmore or nextdc)"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
       responses:
         200:
           description: "Successful response"
@@ -122,12 +161,19 @@ paths:
           description: "The request could not be completed successfully."
           schema:
             $ref: "#/definitions/error"
-  /volumes/search:
+  /location/{location}/volumes/search:
     get:
       tags:
       - "volumes"
       description: "Search for specific volumes."
       parameters:
+      - name: "location"
+        in: "path"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
       - name: "volume"
         in: "query"
         description: "Name of the volume/s to search for. May use * for wildcard."
@@ -151,11 +197,18 @@ paths:
             title: "searchedVolumes"
             items:
               $ref: "#/definitions/volume"
-  /network/lifs:
+  /location/{location}/network/lifs:
     get:
       tags:
       - "network"
-      parameters: []
+      parameters:
+      - name: "location"
+        in: "path"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
       responses:
         200:
           description: "Successful response."
@@ -164,12 +217,19 @@ paths:
             title: "LIFarray"
             items:
               $ref: "#/definitions/lif"
-  /network/lifs/{name}:
+  /location/{location}/network/lifs/{name}:
     get:
       tags:
       - "network"
       description: "Get information about a single LIF"
       parameters:
+      - name: "location"
+        in: "path"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
       - name: "name"
         in: "path"
         description: "Name of the LIF"
@@ -185,6 +245,13 @@ paths:
       - "network"
       description: "Update LIF characteristics"
       parameters:
+      - name: "location"
+        in: "path"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
       - name: "name"
         in: "path"
         description: "Name of the LIF"
@@ -210,6 +277,13 @@ paths:
       - "network"
       description: "Delete a single LIF."
       parameters:
+      - name: "location"
+        in: "path"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
       - name: "name"
         in: "path"
         description: "Name of the LIF"
