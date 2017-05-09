@@ -16,6 +16,7 @@ schemes:
 - "https"
 consumes:
 - "application/json"
+- "application/merge-patch+json"
 produces:
 - "application/json"
 paths:
@@ -111,38 +112,6 @@ paths:
           description: "Successful response"
           schema:
             $ref: "#/definitions/volume"
-    put:
-      tags:
-      - "volumes"
-      description: "Update volume characteristics"
-      parameters:
-      - name: "name"
-        in: "path"
-        description: "Name of the volume"
-        required: true
-        type: "string"
-      - name: "location"
-        in: "path"
-        description: "Physical storage location (kenmore or nextdc)"
-        required: true
-        type: "string"
-        enum:
-        - "kenmore"
-        - "nextdc"
-      - name: "vserver"
-        in: "query"
-        description: "Name of vserver. Not required if there is only one."
-        required: false
-        type: "string"
-      responses:
-        200:
-          description: "Successful update"
-          schema:
-            $ref: "#/definitions/volume"
-        400:
-          description: "The request could not be completed successfully."
-          schema:
-            $ref: "#/definitions/error"
     delete:
       tags:
       - "volumes"
@@ -170,6 +139,48 @@ paths:
       responses:
         200:
           description: "Successful response"
+          schema:
+            $ref: "#/definitions/volume"
+        400:
+          description: "The request could not be completed successfully."
+          schema:
+            $ref: "#/definitions/error"
+    patch:
+      tags:
+      - "volumes"
+      description: "Update volume characteristics by passing in an object containing\
+        \ ONLY the fields you wish to update."
+      consumes:
+      - "application/merge-patch+json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the volume"
+        required: true
+        type: "string"
+      - name: "location"
+        in: "path"
+        description: "Physical storage location (kenmore or nextdc)"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
+      - name: "vserver"
+        in: "query"
+        description: "Name of vserver. Not required if there is only one."
+        required: false
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/volume"
+      responses:
+        200:
+          description: "Successful update"
           schema:
             $ref: "#/definitions/volume"
         400:
@@ -255,7 +266,33 @@ paths:
           description: "Successful response"
           schema:
             $ref: "#/definitions/lif"
-    put:
+    delete:
+      tags:
+      - "network"
+      description: "Delete a single LIF."
+      parameters:
+      - name: "location"
+        in: "path"
+        required: true
+        type: "string"
+        enum:
+        - "kenmore"
+        - "nextdc"
+      - name: "name"
+        in: "path"
+        description: "Name of the LIF"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful response"
+          schema:
+            $ref: "#/definitions/lif"
+        400:
+          description: "The request could not be completed successfully."
+          schema:
+            $ref: "#/definitions/error"
+    patch:
       tags:
       - "network"
       description: "Update LIF characteristics"
@@ -281,32 +318,6 @@ paths:
       responses:
         200:
           description: "Successful update"
-          schema:
-            $ref: "#/definitions/lif"
-        400:
-          description: "The request could not be completed successfully."
-          schema:
-            $ref: "#/definitions/error"
-    delete:
-      tags:
-      - "network"
-      description: "Delete a single LIF."
-      parameters:
-      - name: "location"
-        in: "path"
-        required: true
-        type: "string"
-        enum:
-        - "kenmore"
-        - "nextdc"
-      - name: "name"
-        in: "path"
-        description: "Name of the LIF"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "Successful response"
           schema:
             $ref: "#/definitions/lif"
         400:
@@ -351,11 +362,6 @@ paths:
 definitions:
   volume:
     type: "object"
-    required:
-    - "group"
-    - "name"
-    - "provisionedSize"
-    - "tier"
     properties:
       name:
         type: "string"
